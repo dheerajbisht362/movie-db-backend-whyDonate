@@ -1,0 +1,12 @@
+
+POST http://localhost:3000/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "dheera3j@123",
+    "password": "12d3456Qw",
+    "name": "dheeraj"
+}
+####
+GET http://localhost:3000/movies/home HTTP/1.1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRoZWVyYTNqQDEyMyIsImlhdCI6MTY2ODA1NjM2NiwiZXhwIjoxNjY4MDkyMzY2fQ.S3CAn8YjZ_QfQgENCH5kz5PywALAZIeR4FSwaX-Dy4c

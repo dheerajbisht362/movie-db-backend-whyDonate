@@ -1,0 +1,17 @@
+{
+    "users": {
+        "email": "hello",
+        "password": "poo",
+        "name": "hoo"
+    },
+    "dheeraj@123": {
+        "email": "dheeraj@123",
+        "password": "123456Qw",
+        "name": "dheeraj"
+    },
+    "dheera3j@123": {
+        "email": "dheera3j@123",
+        "password": "12d3456Qw",
+        "name": "dheeraj"
+    }
+}
