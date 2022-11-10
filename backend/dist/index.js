@@ -27,6 +27,7 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json());
 const db = new FSDB("./user.json", false);
+// Login + register routes
 app.post("/login", (req, res) => {
     const { name, email, password } = req.body;
     const user = db.get(email);
@@ -50,6 +51,7 @@ app.post("/login", (req, res) => {
         return res.status(200).send({ message: "Successfully Created User", token });
     }
 });
+// authenticated routed 
 app.get("/movies/:query", auth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {

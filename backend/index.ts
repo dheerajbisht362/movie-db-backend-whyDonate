@@ -20,6 +20,7 @@ app.use(express.json());
 
 const db = new FSDB("./user.json", false); 
 
+// Login + register routes
 app.post("/login",(req,res)=>{
     const {name, email, password} = req.body
     const user = db.get(email);
@@ -50,8 +51,7 @@ app.post("/login",(req,res)=>{
     }
 })
 
-
-
+// authenticated routed 
 app.get("/movies/:query", auth, async (req:AuthInfoRequest,res:Response)=>{
     try{
         const user = db.get(req.user?.email);
