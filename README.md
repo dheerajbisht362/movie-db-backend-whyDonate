@@ -1,4 +1,5 @@
-# movie-db-
+# Backend for movies search app
+Live Deploy Link https://fir-movie-caf0c.web.app/
 
 # Tech-Stack Used #
     - body-parser: "^1.20.1"
