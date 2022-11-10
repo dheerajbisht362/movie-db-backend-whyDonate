@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express, { Response, response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -8,11 +8,14 @@ import jwt from "jsonwebtoken"
 const auth = require("./middleware/auth")
 
 import fetch from 'node-fetch-commonjs';
+import { AuthInfoRequest } from "./types/userRequest";
 
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:4200'
+}));
 app.use(express.json());
 
 const db = new FSDB("./user.json", false); 
@@ -23,7 +26,7 @@ app.post("/login",(req,res)=>{
     if(user){
         if(password == user.password ){
             const token = jwt.sign(
-                { user: user._id, email },
+                { user: name, email },
                     "TOKEN-KEY",
                 {
                   expiresIn: "10h",
@@ -32,12 +35,12 @@ app.post("/login",(req,res)=>{
               // save user token
             return res.status(200).send({message:"Logged In", token})
         }else{
-            return res.status(401).send("Incorrect Password")
+            return res.status(400).send({message:"Incorrect Password"})
         }
     }else{
         db.set(email,req.body)
         const token = jwt.sign(
-            { user: user._id, email },
+            { user: name, email },
                 "TOKEN-KEY",
             {
               expiresIn: "10h",
@@ -49,9 +52,9 @@ app.post("/login",(req,res)=>{
 
 
 
-app.get("/movies/:query", auth, async (req,res)=>{
+app.get("/movies/:query", auth, async (req:AuthInfoRequest,res:Response)=>{
     try{
-        const user = db.get(req.user.email);
+        const user = db.get(req.user?.email);
         if(user){
             const url = `https://api.tvmaze.com/search/shows?q=${req.params.query}`
             
@@ -64,7 +67,7 @@ app.get("/movies/:query", auth, async (req,res)=>{
             
             return res.status(200).send(dataJson);
         }
-        res.status(200).send("Pease Login")
+        res.status(200).send({message:"Pease Login"})
     }catch(err){
         res.send(err)
     }

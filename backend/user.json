@@ -13,5 +13,17 @@
         "email": "dheera3j@123",
         "password": "12d3456Qw",
         "name": "dheeraj"
+    },
+    "dheerajbisht362@gmail": {
+        "com": {
+            "name": "Dheeraj Bisht",
+            "email": "dheerajbisht362@gmail.com",
+            "password": "12345678"
+        }
+    },
+    "fads": {
+        "name": "Dheeraj Bisht",
+        "email": "fads",
+        "password": "12345678"
     }
 }

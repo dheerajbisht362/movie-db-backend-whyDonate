@@ -22,7 +22,9 @@ const auth = require("./middleware/auth");
 const node_fetch_commonjs_1 = __importDefault(require("node-fetch-commonjs"));
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:4200'
+}));
 app.use(express_1.default.json());
 const db = new FSDB("./user.json", false);
 app.post("/login", (req, res) => {
@@ -30,27 +32,28 @@ app.post("/login", (req, res) => {
     const user = db.get(email);
     if (user) {
         if (password == user.password) {
-            const token = jsonwebtoken_1.default.sign({ user: user._id, email }, "TOKEN-KEY", {
+            const token = jsonwebtoken_1.default.sign({ user: name, email }, "TOKEN-KEY", {
                 expiresIn: "10h",
             });
             // save user token
             return res.status(200).send({ message: "Logged In", token });
         }
         else {
-            return res.status(401).send("Incorrect Password");
+            return res.status(400).send({ message: "Incorrect Password" });
         }
     }
     else {
         db.set(email, req.body);
-        const token = jsonwebtoken_1.default.sign({ user: user._id, email }, "TOKEN-KEY", {
+        const token = jsonwebtoken_1.default.sign({ user: name, email }, "TOKEN-KEY", {
             expiresIn: "10h",
         });
         return res.status(200).send({ message: "Successfully Created User", token });
     }
 });
 app.get("/movies/:query", auth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const user = db.get(req.user.email);
+        const user = db.get((_a = req.user) === null || _a === void 0 ? void 0 : _a.email);
         if (user) {
             const url = `https://api.tvmaze.com/search/shows?q=${req.params.query}`;
             const dataJson = yield (0, node_fetch_commonjs_1.default)(url)
@@ -61,7 +64,7 @@ app.get("/movies/:query", auth, (req, res) => __awaiter(void 0, void 0, void 0, 
                 .catch((err) => res.status(401).send(err));
             return res.status(200).send(dataJson);
         }
-        res.status(200).send("Pease Login");
+        res.status(200).send({ message: "Pease Login" });
     }
     catch (err) {
         res.send(err);
